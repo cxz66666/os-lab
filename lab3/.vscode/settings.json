@@ -9,6 +9,7 @@
     "type_traits": "c",
     "xtr1common": "c",
     "*.m": "matlab",
-    "sched.h": "c"
+    "sched.h": "c",
+    "cstdio": "c"
   }
 }

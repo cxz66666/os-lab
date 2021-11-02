@@ -8,10 +8,8 @@
 struct task_struct *current;
 struct task_struct *task[NR_TASKS];
 
-extern task_test_done;
-extern void __init_epc(void);
-
-#define PRIORITY
+extern volatile int task_test_done;
+extern void __init_sepc(void);
 
 // If next==current,do nothing; else update current and call __switch_to.
 void switch_to(struct task_struct *next)
@@ -40,6 +38,7 @@ void task_init(void)
     current->blocked = 0;
     current->pid = 0;
     task[0] = current;
+    task[0]->thread.ra = (unsigned long long)__init_sepc;
     task[0]->thread.sp = (unsigned long long)task[0] + TASK_SIZE;
 
     // set other 4 tasks
@@ -53,9 +52,11 @@ void task_init(void)
         current->blocked = 0;
         current->pid = i;
         task[i] = current;
+        task[i]->thread.ra = (unsigned long long)__init_sepc;
         task[i]->thread.sp = (unsigned long long)current + TASK_SIZE;
         printf("[PID = %d] Process Create Successfully!\n", task[i]->pid);
     }
+    current = task[0];
     task_init_done = 1;
 }
 
@@ -96,6 +97,7 @@ void schedule(void)
     }
     if (!next)
     {
+        next = 0;
         task[0]->counter++;
     }
     if (current->pid != task[next]->pid)
@@ -149,7 +151,7 @@ void schedule(void)
 
     for (int i = LAB_TEST_NUM; i > 0; i--)
     {
-        if (task[i]->priority == MaxPriority && task[i]->counter < minCounter)
+        if (task[i]->priority == MaxPriority && task[i]->counter && task[i]->counter < minCounter)
         {
             minCounter = task[i]->counter;
             next = i;
