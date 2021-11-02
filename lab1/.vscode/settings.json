@@ -1,0 +1,15 @@
+{
+  "files.associations": {
+    "ostream": "cpp",
+    "iostream": "cpp",
+    "string.h": "c",
+    "stdio.h": "c",
+    "ctype.h": "c",
+    "stdlib.h": "c",
+    "type_traits": "c",
+    "xtr1common": "c",
+    "*.m": "matlab",
+    "defs.h": "c",
+    "print.h": "c"
+  }
+}
