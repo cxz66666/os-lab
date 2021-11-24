@@ -1,4 +1,4 @@
-#include"put.h"
+#include "put.h"
 int puts(const char *s)
 {
     while (*s != '\0')
@@ -30,10 +30,11 @@ void puti(int x)
     }
     while (digit >= 1)
     {
-        *UART16550A_DR = (unsigned char)itoch(x/digit);
+        *UART16550A_DR = (unsigned char)itoch(x / digit);
         x %= digit;
         digit /= 10;
     }
+    *UART16550A_DR = '\n';
     return;
 }
 void putullHex(unsigned long long x)
@@ -47,9 +48,11 @@ void putullHex(unsigned long long x)
     }
     while (digit >= 1)
     {
-        *UART16550A_DR = (unsigned char)itoch(x/digit);
+        *UART16550A_DR = (unsigned char)itoch(x / digit);
         x %= digit;
         digit /= 16;
     }
+    *UART16550A_DR = '\n';
+
     return;
 }

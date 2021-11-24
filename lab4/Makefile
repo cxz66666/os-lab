@@ -11,7 +11,7 @@ ABI ?= lp64
 
 INCLUDE = -I$(shell pwd)/include -I$(shell pwd)/arch/riscv/include
 
-CF =  -O3 -march=$(ISA) -mabi=$(ABI) -mcmodel=medany -ffunction-sections -fdata-sections -nostartfiles -nostdlib -nostdinc -static -lgcc -Wl,--nmagic -Wl,--gc-sections 
+CF =  -O2 -march=$(ISA) -mabi=$(ABI) -mcmodel=medany -ffunction-sections -fdata-sections -nostartfiles -nostdlib -nostdinc -static -lgcc -Wl,--nmagic -Wl,--gc-sections 
 CFLAG = ${CF} ${INCLUDE} -DPRIORITY
 
 .PHONY: all run debug clean

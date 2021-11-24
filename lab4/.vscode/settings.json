@@ -9,6 +9,7 @@
     "type_traits": "c",
     "xtr1common": "c",
     "*.m": "matlab",
-    "vm.h": "c"
+    "vm.h": "c",
+    "put.h": "c"
   }
 }

@@ -81,17 +81,19 @@ clean_loop:
 _supervisor:
 	/*your code*/
 	csrw satp, x0
-	csrw stvec,trap_s
+	sfence.vma x0,x0
+	la t1,trap_s
+	csrw stvec,t1
 	la s1,start_kernel
 	la sp,stack_top
 	call  paging_init
-	li t1,_end
+	la t1,_end
 	srli t1,t1,12
 	li t2,0x8000000000000000
 	add t1,t1,t2
 	csrw satp,t1
 	sfence.vma x0,x0
-	mv sp,init_stack_top
+	la sp,init_stack_top
 	mv ra,s1
 	jr x0
 
