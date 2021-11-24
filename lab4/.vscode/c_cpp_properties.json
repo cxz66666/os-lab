@@ -2,7 +2,10 @@
   "configurations": [
     {
       "name": "Linux",
-      "includePath": ["${workspaceFolder}/**"],
+      "includePath": [
+        "${workspaceFolder}/**",
+        "${workspaceFolder}/arch/riscv/include"
+      ],
       "compilerPath": "/usr/bin/gcc",
       "intelliSenseMode": "linux-gcc-x64"
     }

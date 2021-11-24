@@ -165,8 +165,8 @@ void schedule(void)
     {
         printf("[ %d -> %d ] Switch from task %d[%lx] to task %d[%lx], prio: %d, counter: %d\n",
                current->pid, task[next]->pid,
-               current->pid, (unsigned long)current->thread.sp,
-               task[next]->pid, (unsigned long)task[next],
+               current->pid, (unsigned long long)current->thread.sp,
+               task[next]->pid, (unsigned long long)task[next],
                task[next]->priority, task[next]->counter);
     }
     switch_to(task[next]);
