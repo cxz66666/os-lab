@@ -10,6 +10,8 @@
     "xtr1common": "c",
     "*.m": "matlab",
     "vm.h": "c",
-    "put.h": "c"
+    "put.h": "c",
+    "sched.h": "c",
+    "cstdio": "c"
   }
 }

@@ -34,7 +34,6 @@ void puti(int x)
         x %= digit;
         digit /= 10;
     }
-    *UART16550A_DR = '\n';
     return;
 }
 void putullHex(unsigned long long x)
@@ -52,7 +51,6 @@ void putullHex(unsigned long long x)
         x %= digit;
         digit /= 16;
     }
-    *UART16550A_DR = '\n';
 
     return;
 }

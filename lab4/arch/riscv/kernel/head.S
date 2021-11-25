@@ -17,8 +17,8 @@
 .extern _end
 .extern paging_init
 .extern init_stack_top
-
-
+.extern putullHex
+.extern offset
 
 _start:
 	#关闭所有中断
@@ -58,7 +58,7 @@ clean_loop:
 	csrs mideleg, t1
 
 	#设置instruction/load/store page fault委托
-	li t1, 0xB
+	li t1, 0xb
 	slli t1, t1, 12				#t1=1011 0000 0000 0000
 	csrs medeleg, t1
 
@@ -83,8 +83,17 @@ _supervisor:
 	csrw satp, x0
 	sfence.vma x0,x0
 	la t1,trap_s
+	la t2,offset
+	ld t2,0(t2)
+	add t1,t1,t2
+
 	csrw stvec,t1
 	la s1,start_kernel
+	add s1,s1,t2
+
+	la s2,init_stack_top
+	add s2,s2,t2
+
 	la sp,stack_top
 	call  paging_init
 	la t1,_end
@@ -93,9 +102,9 @@ _supervisor:
 	add t1,t1,t2
 	csrw satp,t1
 	sfence.vma x0,x0
-	la sp,init_stack_top
-	mv ra,s1
-	jr x0
+	add sp,s2,x0
+	add ra,s1,x0
+	ret
 
 
 	
