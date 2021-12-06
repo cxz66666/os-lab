@@ -14,7 +14,9 @@ extern uint64_t cur;
 extern uint64_t _end;
 extern uint64_t offset;
 extern uint64_t rodata_start;
-
+extern uint64_t *user_paging_init();
+extern uint64_t USER_SIZE;
+extern uint64_t USER_STACK_TOP;
 void test_section_mod()
 {
 	//对rodata的写入操作
@@ -83,7 +85,12 @@ void task_init(void)
 		current->pid = i;
 		current->thread.ra = (unsigned long long)init_epc;
 		// putullHex(current);
-		current->thread.sp = (unsigned long long)current + TASK_SIZE;
+		current->thread.sp = USER_STACK_TOP;
+
+		//初始化的时候sscratch 设置为内核栈的值，但是之后sscratch存的是用户栈的值
+		current->sscratch = (unsigned long long)current + TASK_SIZE;
+		current->mm.pgtbl = user_paging_init();
+		current->mm.user_size = USER_SIZE;
 
 		puts("[PID = ");
 		puti(current->pid);
@@ -92,6 +99,13 @@ void task_init(void)
 		task[i] = current;
 	}
 	current = task[0];
+
+	//初始化sscratch为task[0]的内核栈。
+	asm volatile(
+		"la t1,current\n"
+		"ld t1,0(t1)\n"
+		"ld t1,160(t1)\n"
+		"csrw sscratch,t1");
 }
 
 #ifdef SJF
